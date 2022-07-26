@@ -2,21 +2,25 @@
 
 library(ggplot2)
 
+####
+##FIGURE 1 ABUNDANCE-OCCUPANCY
+####
+
+#generate random occupancy between 0 and 1
 x<-seq(from=0.01, to=1, by=0.01)
 
-y<-seq(from=1, to=100, by=1)
-logy<-log(y)
-
+#generate mean relationship for abundance following saturating function
 meany<-6.5*x/(0.3^1+x^1)
 
+#generate slightly modified relationships for species specific curves
 diff_y<-7*x/(0.15^1+x^1)
-
-diff_y2<-6*x/(0.5^1+x^1)
 
 diff_y2<-2+2*x
 
+#put all data into one dataframe
 ao_df<-data.frame(x=x, y=meany, diffy=diff_y, diffy2=diff_y2)
 
+#plot mean relationship
 p1<-ggplot(ao_df, aes(x=x, y=y))+
   geom_line(size=2)+
   xlab("Proportional Occupancy")+
@@ -30,19 +34,22 @@ p1<-ggplot(ao_df, aes(x=x, y=y))+
   annotate(geom="text",x=0.5, y=8, label="System 1", size=5)+
 annotate(geom="text",x=0, y=8.1, label="a)", size=5)
 
-
+#put all data into a dataframe for the lines in panel 2
 ao_df_lines<-data.frame(x=rep(x,3), y=c(meany,diff_y,diff_y2), spp=rep(c("mean","bird","fish"), each=length(x)),
                         lwd=rep(c(2,1,1), each=length(x)))
 
+#generate data for points around the lines
+#random values between 0 and 1
 newx<-rbeta(10, 2, 5)
 
+#same relationships as before but with new x data
 diff_y<-7*newx/(0.15^1+newx^1)+rnorm(10,0,0.3)
-
-diff_y2<-6*newx/(0.5^1+newx^1)+rnorm(10,0,0.3)
 
 diff_y2<-2+2*newx+rnorm(10,0,0.3)
 
+#setseed for sd bars since some random values are huge
 set.seed(101)
+#combine all point data to use in panel 2
 ao_df_complex<-data.frame(x=newx, diffy=diff_y, diffy2=diff_y2, sdbirdy=rbeta(10,5,2), sdbirdx=rbeta(10,0.8,10),
                           sdfishy=rbeta(10,2,5), sdfishx=rbeta(10,0.3,10))
 
@@ -83,19 +90,21 @@ pdf("AO_plot.pdf", width=10, height=5)
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 dev.off()
 
+####
+##FIGURE 2 Logistic Growth Example
 
+#x values from 1 to 50
 x<-seq(from=1, to=50, by=1)
-#x<-rbeta(40,2,2)*100
 
-#y<-0.5*x*(1-x/100)+rnorm(20,0,1)
+#use those x for a logistic growth curve with random variability
 y<-95/(1+exp(-0.25*(x-25)))+rnorm(50,0,3)
 
+# make sure the noise doesnt add values below 0
 y<-ifelse(y<0, rnorm(1,5,1), y)
-#y<-ifelse(y>100, rnorm(1,90,3), y)
 
+#put into data frame and change colors of points after a certain timestep
 msy_df<-data.frame(effort=x, yield=y, overfished=ifelse(x>25, "red", "black"))
 
-plot(x,y, xlim=c(0,100))
 
 p1<-ggplot(msy_df, aes(x=effort, y=yield))+
   geom_point(size=1)+xlab("Time")+
@@ -122,6 +131,8 @@ p2<-ggplot(msy_df, aes(x=effort, y=yield))+
 
 p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
   stat_function(fun=function(x) 95/(1+exp(-0.25*(x-25))), size=1.5, linetype="dashed", colour="grey")+
+  geom_segment(aes(x=0, xend=25, y=50, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
+  geom_segment(aes(x=25, xend=25, y=0, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
   geom_point(size=1)+scale_colour_manual(values=c("black","#d95f02"))+
   scale_colour_manual(name="Effort", labels=c("<50", ">50"), values=c("black","#d95f02"))+
   guides(color=guide_legend(override.aes=list(fill=NA)))+
@@ -140,8 +151,6 @@ p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
         axis.text.x = element_text(colour = "grey"), axis.text.y = element_text(colour = "grey"), axis.ticks=element_line(colour="grey"),
         axis.title = element_text(colour="grey"))+
   #annotate(geom="text",x=25, y=55, label="MSY", size=4, colour="#d95f02")+
-  geom_segment(aes(x=0, xend=25, y=50, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
-  geom_segment(aes(x=25, xend=25, y=0, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
   annotate(geom="text",x=27, y=105, label="Read beyond data", size=5)+
   annotate(geom="text",x=2, y=105, label="c)", size=5)
 
