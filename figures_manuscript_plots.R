@@ -56,16 +56,16 @@ ao_df_complex<-data.frame(x=newx, diffy=diff_y, diffy2=diff_y2, sdbirdy=rbeta(10
 p2<-ggplot()+
   geom_line(data=ao_df_lines, aes(x=x, y=y, group=spp, color=spp, size=spp, linetype=spp))+
   scale_size_manual(values=c(1,1,2))+
-  scale_color_manual(values=c('#1b9e77','#d95f02','darkgrey'))+
+  scale_color_manual(values=c('#006AAC','#EE6200','darkgrey'))+
   scale_linetype_manual(values=c("dashed","dashed","solid"))+
   geom_pointrange(data=ao_df_complex,aes(ymin=diffy-sdbirdy*newx, ymax=diffy+sdbirdy*newx,
-                                         x=newx, y=diffy),col="#1b9e77")+
+                                         x=newx, y=diffy),col="#006AAC")+
   geom_pointrange(data=ao_df_complex, aes(xmin=newx-sdbirdx*newx, xmax=newx+sdbirdx*newx,
-                                         x=newx, y=diffy),col="#1b9e77")+
+                                         x=newx, y=diffy),col="#006AAC")+
   geom_pointrange(data=ao_df_complex,aes(ymin=diffy2-sdfishy*newx, ymax=diffy2+sdfishy*newx,
-                                         x=newx, y=diffy2),col="#d95f02")+
+                                         x=newx, y=diffy2),col="#EE6200")+
   geom_pointrange(data=ao_df_complex, aes(xmin=newx-sdfishx*newx, xmax=newx+sdfishx*newx,
-                                          x=newx, y=diffy2),col="#d95f02")+
+                                          x=newx, y=diffy2),col="#EE6200")+
   xlab("Proportional Occupancy")+
   ylab("Log Local Abundance")+
   theme_grey(base_size = 12)+
@@ -74,9 +74,9 @@ p2<-ggplot()+
         panel.background = element_blank(), axis.line = element_line(colour = "black"))+
   theme(legend.position = "none")+
   theme(plot.margin=unit(c(3,2,1,0),"cm"))+
-  annotate(geom="text",x=1.06, y=6.17, label="Bird", size=4,col="#1b9e77")+
+  annotate(geom="text",x=1.06, y=6.17, label="Bird", size=4,col="#006AAC")+
   annotate(geom="text",x=1.07, y=5, label="Mean", size=4,col="darkgrey")+
-  annotate(geom="text",x=1.06, y=4, label="Fish", size=4,col="#d95f02")+
+  annotate(geom="text",x=1.06, y=4, label="Fish", size=4,col="#EE6200")+
   annotate(geom="text",x=0.5, y=7.5, label="Does that relationship vary by species?", size=4)+
   annotate(geom="text",x=0.5, y=8, label="System 2", size=5)+
   annotate(geom="text",x=0, y=8.1, label="b)", size=5)
@@ -107,7 +107,7 @@ msy_df<-data.frame(effort=x, yield=y, overfished=ifelse(x>25, "red", "black"))
 
 
 p1<-ggplot(msy_df, aes(x=effort, y=yield))+
-  geom_point(size=1)+xlab("Time")+
+  geom_point(size=1.25)+xlab("Time")+
   ylab("Population size")+
   theme_grey(base_size = 12)+
   xlim(0,50)+ylim(0,105)+
@@ -118,7 +118,7 @@ p1<-ggplot(msy_df, aes(x=effort, y=yield))+
 
 p2<-ggplot(msy_df, aes(x=effort, y=yield))+
   stat_function(fun=function(x) 95/(1+exp(-0.25*(x-25))), size=1.5, linetype="dashed")+
-  geom_point(colour="grey",size=1)+xlab("Time")+
+  geom_point(colour="grey",size=1.25)+xlab("Time")+
   ylab("Population size")+
   theme_grey(base_size = 12)+
   xlim(0,50)+ylim(0,105)+
@@ -131,10 +131,10 @@ p2<-ggplot(msy_df, aes(x=effort, y=yield))+
 
 p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
   stat_function(fun=function(x) 95/(1+exp(-0.25*(x-25))), size=1.5, linetype="dashed", colour="grey")+
-  geom_segment(aes(x=0, xend=25, y=50, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
-  geom_segment(aes(x=25, xend=25, y=0, yend=50), colour="#d95f02", size=1.5, linetype="dotted")+
-  geom_point(size=1)+scale_colour_manual(values=c("black","#d95f02"))+
-  scale_colour_manual(name="Effort", labels=c("<50", ">50"), values=c("black","#d95f02"))+
+  geom_segment(aes(x=0, xend=25, y=50, yend=50), colour="#EE6200", size=1.5, linetype="dotted")+
+  geom_segment(aes(x=25, xend=25, y=0, yend=50), colour="#EE6200", size=1.5, linetype="dotted")+
+  geom_point(size=1.25)+scale_colour_manual(values=c("black","#EE6200"))+
+  scale_colour_manual(name="Effort", labels=c("<50", ">50"), values=c("black","#EE6200"))+
   guides(color=guide_legend(override.aes=list(fill=NA)))+
   xlab("Time")+
   ylab("Population size")+
@@ -154,10 +154,10 @@ p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
   annotate(geom="text",x=27, y=105, label="Read beyond data", size=5)+
   annotate(geom="text",x=2, y=105, label="c)", size=5)
 
-jpeg("log_growth_plot_7_26.jpeg", units="in", res=400, width=12, height=4)
+jpeg("log_growth_plot_9_08.jpeg", units="in", res=400, width=12, height=4)
 gridExtra::grid.arrange(p1, p2, p3, nrow = 1)
 dev.off()
 
-pdf("log_growth_plot_7_26.pdf", height=3, width=8)
+pdf("log_growth_plot_9_08.pdf", height=3, width=8)
 gridExtra::grid.arrange(p1, p2, p3, nrow = 1)
 dev.off()
