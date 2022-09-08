@@ -107,7 +107,7 @@ msy_df<-data.frame(effort=x, yield=y, overfished=ifelse(x>25, "red", "black"))
 
 
 p1<-ggplot(msy_df, aes(x=effort, y=yield))+
-  geom_point(size=1.25)+xlab("Time")+
+  geom_point(size=1)+xlab("Time")+
   ylab("Population size")+
   theme_grey(base_size = 12)+
   xlim(0,50)+ylim(0,105)+
@@ -118,7 +118,7 @@ p1<-ggplot(msy_df, aes(x=effort, y=yield))+
 
 p2<-ggplot(msy_df, aes(x=effort, y=yield))+
   stat_function(fun=function(x) 95/(1+exp(-0.25*(x-25))), size=1.5, linetype="dashed")+
-  geom_point(colour="grey",size=1.25)+xlab("Time")+
+  geom_point(colour="grey",size=1)+xlab("Time")+
   ylab("Population size")+
   theme_grey(base_size = 12)+
   xlim(0,50)+ylim(0,105)+
@@ -133,7 +133,7 @@ p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
   stat_function(fun=function(x) 95/(1+exp(-0.25*(x-25))), size=1.5, linetype="dashed", colour="grey")+
   geom_segment(aes(x=0, xend=25, y=50, yend=50), colour="#EE6200", size=1.5, linetype="dotted")+
   geom_segment(aes(x=25, xend=25, y=0, yend=50), colour="#EE6200", size=1.5, linetype="dotted")+
-  geom_point(size=1.25)+scale_colour_manual(values=c("black","#EE6200"))+
+  geom_point(size=1)+scale_colour_manual(values=c("black","#EE6200"))+
   scale_colour_manual(name="Effort", labels=c("<50", ">50"), values=c("black","#EE6200"))+
   guides(color=guide_legend(override.aes=list(fill=NA)))+
   xlab("Time")+
@@ -154,7 +154,7 @@ p3<-ggplot(msy_df, aes(x=effort, y=yield, colour=overfished))+
   annotate(geom="text",x=27, y=105, label="Read beyond data", size=5)+
   annotate(geom="text",x=2, y=105, label="c)", size=5)
 
-jpeg("log_growth_plot_9_08.jpeg", units="in", res=400, width=12, height=4)
+jpeg("log_growth_plot_9_08.jpeg", units="in", res=400, width=8, height=3)
 gridExtra::grid.arrange(p1, p2, p3, nrow = 1)
 dev.off()
 
