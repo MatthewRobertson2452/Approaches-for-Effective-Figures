@@ -161,3 +161,71 @@ dev.off()
 pdf("log_growth_plot_9_08.pdf", height=3, width=8)
 gridExtra::grid.arrange(p1, p2, p3, nrow = 1)
 dev.off()
+
+library(tidyverse)
+library(patchwork)
+
+###Figure 3 Figure Improvement
+
+CO2$Treatment <- recode_factor(CO2$Treatment, nonchilled = "Nonchilled", chilled = "Chilled")
+p1 <- ggplot(CO2, aes(x = Treatment, y = uptake)) +
+  geom_bar(stat = "identity") +
+  theme_classic(base_size = 7) +
+  ggtitle("a) Bar plot of data")
+
+p2 <- ggplot(CO2, aes(x = Treatment, y = uptake)) +
+  geom_boxplot() +
+  ylab("Uptake") +
+  theme_classic(base_size = 7) +
+  ggtitle("b) Correct plot type")
+
+p3 <- ggplot(CO2, aes(x = Treatment, y = uptake)) +
+  geom_jitter(width = 0, color = "darkgray") +
+  geom_boxplot(alpha = 0) +
+  ylab("Uptake") +
+  theme_classic(base_size = 7) +
+  ggtitle("c) Add data")
+
+p4 <- ggplot(CO2, aes(x = Treatment, y = uptake)) +
+  geom_jitter(width = 0.1, color = "darkgray") +
+  geom_boxplot(alpha = 0) +
+  ylab("Uptake") +
+  theme_classic(base_size = 7) +
+  theme(legend.position = "none") +
+  ggtitle("d) Jitter data for clarity")
+
+p5 <- ggplot(CO2, aes(x = Treatment, y = uptake, fill = Treatment, color = Treatment)) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  geom_boxplot(alpha = 0.5) +
+  scale_color_manual(values = c("#E66100","#016AA8")) +
+  scale_fill_manual(values = c("#E66100","#016AA8")) +
+  ylab("Uptake") +
+  theme_classic(base_size = 7) +
+  theme(legend.position = "none") +
+  ggtitle("e) Add color")
+
+p6 <- ggplot(CO2, aes(x = Treatment, y = uptake, fill = Treatment, color = Treatment)) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  geom_boxplot(alpha = 0.5) +
+  scale_color_manual(values = c("#E66100","#016AA8")) +
+  scale_fill_manual(values = c("#E66100","#016AA8")) +
+  ylab("Uptake") +
+  theme_classic(base_size = 15) +
+  theme(legend.position = "none") +
+  ggtitle("f) Increase font size")
+
+p7 <- ggplot(CO2, aes(x = Treatment, y = uptake, fill = Treatment, color = Treatment)) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  geom_boxplot(alpha = 0.5) +
+  scale_color_manual(values = c("#E66100","#016AA8")) +
+  scale_fill_manual(values = c("#E66100","#016AA8")) +
+  ylab("Uptake") +
+  theme_classic(base_size = 15) +
+  theme(legend.position = "none") +
+  facet_wrap(~Type) +
+  ggtitle("g) Use small multiples with consistent colors")
+
+
+
+
+(p1 | p2) / (p3 | p4) / (p5 | p6) /p7
