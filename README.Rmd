@@ -142,7 +142,7 @@ dev.off()
 ```
 
 
-## FIGURE 2 Logistic Growth Example
+## Figure 2 Logistic Growth Example
 
 Similar to Figure 1, Figure 2 required the creation of simulated data, however, the data were the same for all three panels. Data simulation was relatively straightforward, requiring a logistic equation where points were modified to add some noise.
 
