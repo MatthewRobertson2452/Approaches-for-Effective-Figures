@@ -136,7 +136,7 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 dev.off()
 ```
 
-\#\#FIGURE 2 Logistic Growth Example
+## FIGURE 2 Logistic Growth Example
 
 Similar to Figure 1, Figure 2 required the creation of simulated data,
 however, the data were the same for all three panels. Data simulation
@@ -238,7 +238,7 @@ gridExtra::grid.arrange(p1, p2, p3, nrow = 1)
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-\#\#Figure 3 Figure Improvement
+## Figure 3 Figure Improvement
 
 Unlike Figures 1 & 2, Figure 3 was based on the freely available CO2
 dataset in R. As a result, all that was required in terms of initial
